@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relationship Assessment | Mila Couples</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:    #B76E8E;
+      --rose-lt: #F3D9E4;
+      --gold:    #C9A87C;
+      --gold-lt: #F5EDD9;
+      --cream:   #FDF9F6;
+      --dark:    #2C1810;
+      --mid:     #7A6655;
+      --card:    #FFFFFF;
+      --border:  #EDE0D4;
+      --secure:  #4CAF82;
+      --anxious: #E4A836;
+      --avoidant:#5B8DD9;
+      --fearful: #9B72CF;
+      --stage-0: #E4A836;
+      --stage-1: #E47836;
+      --stage-2: #5B8DD9;
+      --stage-3: #72B8CF;
+      --stage-4: #4CAF82;
+      --radius:  14px;
+      --shadow:  0 4px 24px rgba(44,24,16,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(253,249,246,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; color: var(--rose); text-decoration: none;
+      letter-spacing: .03em;
+    }
+    .lang-btn {
+      background: none; border: 1.5px solid var(--rose);
+      color: var(--rose); border-radius: 20px;
+      padding: 5px 16px; font-size: .82rem; font-weight: 500;
+      cursor: pointer; transition: all .2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .lang-btn:hover { background: var(--rose); color: #fff; }
+
+    /* ── SCREENS ── */
+    .screen {
+      display: none; opacity: 0;
+      transition: opacity .4s ease;
+      min-height: 100vh;
+      padding-top: 72px;
+    }
+    .screen.active { display: block; opacity: 1; }
+    #screen-landing.active,
+    #screen-info.active { display: flex; }
+
+    /* ── HERO ── */
+    #screen-landing {
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      background: linear-gradient(160deg, var(--cream) 0%, #F5E8F0 100%);
+    }
+    .hero-inner {
+      max-width: 680px; padding: 60px 24px 80px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--rose-lt); color: var(--rose);
+      border-radius: 20px; padding: 5px 18px;
+      font-size: .78rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.2; color: var(--dark);
+      margin-bottom: 18px;
+    }
+    .hero-title em { color: var(--rose); font-style: italic; }
+    .hero-sub {
+      font-size: 1.05rem; color: var(--mid);
+      max-width: 520px; margin: 0 auto 32px;
+      font-weight: 300;
+    }
+    .hero-stats {
+      display: flex; gap: 32px; justify-content: center;
+      margin-bottom: 36px; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; color: var(--rose); font-weight: 600;
+    }
+    .stat-label { font-size: .75rem; color: var(--mid); margin-top: 2px; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--rose), #C9507A);
+      color: #fff; border: none; border-radius: 32px;
+      padding: 16px 44px; font-size: 1rem; font-weight: 500;
+      cursor: pointer; transition: all .25s;
+      box-shadow: 0 6px 20px rgba(183,110,142,.35);
+      font-family: 'Inter', sans-serif;
+      letter-spacing: .02em;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(183,110,142,.4); }
+    .btn-primary:active { transform: translateY(0); }
+    .hero-note { font-size: .78rem; color: var(--mid); margin-top: 16px; }
+
+    /* ── INFO SCREEN ── */
+    #screen-info {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .info-card {
+      background: var(--card); border-radius: var(--radius);
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      max-width: 480px; width: 100%; margin: 40px 20px;
+      padding: 48px 40px;
+    }
+    .info-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; color: var(--dark); margin-bottom: 8px;
+    }
+    .info-card p { color: var(--mid); font-size: .92rem; margin-bottom: 28px; }
+    .field-label {
+      display: block; font-size: .8rem; font-weight: 600;
+      color: var(--mid); letter-spacing: .06em;
+      text-transform: uppercase; margin-bottom: 7px;
+    }
+    .field-input {
+      width: 100%; padding: 13px 16px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: .95rem; font-family: 'Inter', sans-serif;
+      background: var(--cream); color: var(--dark);
+      transition: border-color .2s;
+      margin-bottom: 20px;
+    }
+    .field-input:focus { outline: none; border-color: var(--rose); }
+    .field-input.error { border-color: #E05656; }
+    .error-msg { color: #E05656; font-size: .78rem; margin-top: -14px; margin-bottom: 16px; display: none; }
+    .error-msg.show { display: block; }
+
+    /* ── QUIZ SCREEN ── */
+    #screen-quiz { display: flex; flex-direction: column; }
+    .progress-bar-wrap {
+      position: fixed; top: 57px; left: 0; right: 0; z-index: 90;
+      height: 4px; background: var(--border);
+    }
+    .progress-bar-fill {
+      height: 100%; background: linear-gradient(90deg, var(--rose), var(--gold));
+      transition: width .4s ease;
+    }
+    .quiz-container {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 20px 16px 60px;
+    }
+    .question-card {
+      background: var(--card); border-radius: var(--radius);
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      max-width: 620px; width: 100%;
+      padding: 44px 40px;
+      animation: fadeSlideIn .35s ease;
+    }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .q-category {
+      font-size: .73rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--rose); margin-bottom: 14px;
+    }
+    .q-counter { color: var(--mid); font-size: .83rem; float: right; font-weight: 400; }
+    .q-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem; line-height: 1.45; color: var(--dark);
+      margin-bottom: 30px; clear: both;
+    }
+    .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .option-btn {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--cream); border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 13px 18px;
+      cursor: pointer; transition: all .18s;
+      text-align: left; font-family: 'Inter', sans-serif;
+      font-size: .92rem; color: var(--dark); width: 100%;
+    }
+    .option-btn:hover { border-color: var(--rose); background: var(--rose-lt); }
+    .option-btn.selected {
+      border-color: var(--rose); background: var(--rose-lt); color: var(--dark);
+    }
+    .option-dot {
+      width: 18px; height: 18px; min-width: 18px;
+      border-radius: 50%; border: 2px solid var(--border);
+      transition: all .18s; display: flex; align-items: center; justify-content: center;
+    }
+    .option-btn.selected .option-dot {
+      border-color: var(--rose); background: var(--rose);
+    }
+    .option-btn.selected .option-dot::after {
+      content: ''; width: 6px; height: 6px;
+      background: #fff; border-radius: 50%;
+    }
+    .q-nav { display: flex; justify-content: space-between; align-items: center; }
+    .btn-back {
+      background: none; border: 1.5px solid var(--border);
+      color: var(--mid); border-radius: 24px;
+      padding: 10px 24px; font-size: .88rem; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all .2s;
+    }
+    .btn-back:hover { border-color: var(--mid); }
+    .btn-next {
+      background: linear-gradient(135deg, var(--rose), #C9507A);
+      color: #fff; border: none; border-radius: 24px;
+      padding: 12px 32px; font-size: .92rem; font-weight: 500;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: all .2s; opacity: .4; pointer-events: none;
+      box-shadow: 0 4px 14px rgba(183,110,142,.3);
+    }
+    .btn-next.enabled { opacity: 1; pointer-events: auto; }
+    .btn-next.enabled:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(183,110,142,.4); }
+    .section-divider {
+      background: linear-gradient(135deg, var(--rose-lt), var(--gold-lt));
+      border-radius: var(--radius); padding: 28px 32px;
+      max-width: 620px; width: 100%;
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      animation: fadeSlideIn .35s ease;
+    }
+    .section-divider h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; color: var(--dark); margin-bottom: 8px;
+    }
+    .section-divider p { color: var(--mid); font-size: .9rem; }
+    .section-divider .btn-next { margin-top: 20px; opacity: 1; pointer-events: auto; }
+
+    /* ── RESULTS ── */
+    #screen-results {
+      background: linear-gradient(160deg, var(--cream) 0%, #F5E8F0 100%);
+    }
+    .results-inner {
+      max-width: 760px; margin: 0 auto; padding: 50px 20px 80px;
+    }
+    .results-header { text-align: center; margin-bottom: 44px; }
+    .results-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--dark); margin-bottom: 10px;
+    }
+    .results-header p { color: var(--mid); font-size: .95rem; }
+    .results-name { color: var(--rose); }
+
+    .results-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 18px; margin-bottom: 24px;
+    }
+    @media (max-width: 560px) { .results-grid { grid-template-columns: 1fr; } }
+
+    .result-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      padding: 28px 24px; position: relative; overflow: hidden;
+    }
+    .result-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .result-card.secure::before { background: var(--secure); }
+    .result-card.anxious::before { background: var(--anxious); }
+    .result-card.avoidant::before { background: var(--avoidant); }
+    .result-card.fearful::before { background: var(--fearful); }
+    .result-card.stage-0::before { background: var(--stage-0); }
+    .result-card.stage-1::before { background: var(--stage-1); }
+    .result-card.stage-2::before { background: var(--stage-2); }
+    .result-card.stage-3::before { background: var(--stage-3); }
+    .result-card.stage-4::before { background: var(--stage-4); }
+    .result-card.health::before { background: linear-gradient(90deg, var(--rose), var(--gold)); }
+
+    .result-card-label {
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--mid); margin-bottom: 8px;
+    }
+    .result-card-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; color: var(--dark); margin-bottom: 10px;
+    }
+    .result-card-desc { font-size: .83rem; color: var(--mid); line-height: 1.55; }
+
+    .health-bar-wrap {
+      background: var(--border); border-radius: 6px;
+      height: 8px; margin: 12px 0 8px; overflow: hidden;
+    }
+    .health-bar-fill {
+      height: 100%; border-radius: 6px;
+      background: linear-gradient(90deg, var(--rose), var(--gold));
+      transition: width 1s ease;
+    }
+    .health-score-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; color: var(--rose); font-weight: 600;
+    }
+    .health-score-sub { font-size: .78rem; color: var(--mid); }
+
+    .insight-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      padding: 32px 28px; margin-bottom: 24px;
+    }
+    .insight-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--dark); margin-bottom: 14px;
+    }
+    .insight-card p { color: var(--mid); font-size: .9rem; line-height: 1.65; margin-bottom: 10px; }
+    .insight-card p:last-child { margin-bottom: 0; }
+
+    .cta-card {
+      background: linear-gradient(135deg, var(--rose), #C9507A);
+      border-radius: var(--radius); padding: 40px 32px;
+      text-align: center; color: #fff;
+      box-shadow: 0 8px 30px rgba(183,110,142,.4);
+    }
+    .cta-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; margin-bottom: 10px;
+    }
+    .cta-card p { font-size: .9rem; opacity: .88; margin-bottom: 26px; }
+    .btn-cta {
+      display: inline-block;
+      background: #fff; color: var(--rose);
+      border: none; border-radius: 32px;
+      padding: 15px 40px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: all .22s; font-family: 'Inter', sans-serif;
+      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    }
+    .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+    .cta-note { font-size: .78rem; opacity: .75; margin-top: 14px; }
+
+    /* ── MISC ── */
+    @media (max-width: 480px) {
+      .question-card, .info-card { padding: 32px 22px; }
+      .q-text { font-size: 1.1rem; }
+      .results-inner { padding: 36px 14px 60px; }
+      .cta-card { padding: 30px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ──────────── NAV ──────────── -->
+<nav>
+  <a class="nav-logo" href="https://milacouples.com" target="_blank">milacouples.com</a>
+  <button class="lang-btn" id="langToggle" onclick="toggleLang()">Русский</button>
+</nav>
+
+<!-- ──────────── LANDING ──────────── -->
+<section class="screen active" id="screen-landing">
+  <div class="hero-inner">
+    <div class="hero-badge" data-en="Comprehensive Relationship Assessment" data-ru="Комплексная диагностика отношений">Comprehensive Relationship Assessment</div>
+    <h1 class="hero-title">
+      <span data-en="Discover the Hidden <em>Architecture</em><br>of Your Relationship" data-ru="Откройте скрытую <em>архитектуру</em><br>ваших отношений">Discover the Hidden <em>Architecture</em><br>of Your Relationship</span>
+    </h1>
+    <p class="hero-sub" data-en="A science-based assessment of attachment styles, relationship dynamics, and your unique growth edge as a couple." data-ru="Научно обоснованная диагностика стилей привязанности, динамики отношений и точек роста вашей пары.">A science-based assessment of attachment styles, relationship dynamics, and your unique growth edge as a couple.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">35</div><div class="stat-label" data-en="Questions" data-ru="Вопросов">Questions</div></div>
+      <div class="stat"><div class="stat-num">4</div><div class="stat-label" data-en="Dimensions Assessed" data-ru="Измерения">Dimensions Assessed</div></div>
+      <div class="stat"><div class="stat-num">~10</div><div class="stat-label" data-en="Minutes" data-ru="Минут">Minutes</div></div>
+    </div>
+    <button class="btn-primary" onclick="goTo('info')" data-en="Begin the Assessment" data-ru="Начать диагностику">Begin the Assessment</button>
+    <p class="hero-note" data-en="Free · Confidential · Insightful" data-ru="Бесплатно · Конфиденциально · Глубоко">Free · Confidential · Insightful</p>
+  </div>
+</section>
+
+<!-- ──────────── INFO ──────────── -->
+<section class="screen" id="screen-info">
+  <div class="info-card">
+    <h2 data-en="Let's get started" data-ru="Начнём">Let's get started</h2>
+    <p data-en="Please enter your details so we can personalise your results and reach out to you." data-ru="Введите ваши данные, чтобы мы могли персонализировать результаты и связаться с вами.">Please enter your details so we can personalise your results and reach out to you.</p>
+    <label class="field-label" for="inp-name" data-en="YOUR NAME" data-ru="ВАШЕ ИМЯ">YOUR NAME</label>
+    <input class="field-input" id="inp-name" type="text" autocomplete="given-name" />
+    <div class="error-msg" id="err-name" data-en="Please enter your name." data-ru="Пожалуйста, введите ваше имя.">Please enter your name.</div>
+    <label class="field-label" for="inp-email" data-en="YOUR EMAIL" data-ru="ВАШ EMAIL">YOUR EMAIL</label>
+    <input class="field-input" id="inp-email" type="email" autocomplete="email" />
+    <div class="error-msg" id="err-email" data-en="Please enter a valid email." data-ru="Пожалуйста, введите корректный email.">Please enter a valid email.</div>
+    <button class="btn-primary" style="width:100%;margin-top:4px" onclick="startQuiz()" data-en="Start the Test →" data-ru="Начать тест →">Start the Test →</button>
+  </div>
+</section>
+
+<!-- ──────────── QUIZ ──────────── -->
+<section class="screen" id="screen-quiz">
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="quiz-container">
+    <div id="quizContent"></div>
+  </div>
+</section>
+
+<!-- ──────────── RESULTS ──────────── -->
+<section class="screen" id="screen-results">
+  <div class="results-inner">
+    <div class="results-header">
+      <h2><span data-en="Your Results," data-ru="Ваши результаты,">Your Results,</span> <span class="results-name" id="resultName"></span></h2>
+      <p data-en="Here is what we found across four key dimensions of your relationship." data-ru="Вот что мы обнаружили по четырём ключевым измерениям ваших отношений.">Here is what we found across four key dimensions of your relationship.</p>
+    </div>
+    <div class="results-grid" id="resultsGrid"></div>
+    <div class="insight-card" id="insightCard"></div>
+    <div class="cta-card" id="ctaCard"></div>
+  </div>
+</section>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════
+
+let lang = 'en';
+let currentQ = 0;
+let answers = new Array(35).fill(null);
+let userName = '', userEmail = '';
+let shownDividers = new Set(); // tracks which section dividers have already been displayed
+
+const t = (el, key) => el.getAttribute('data-' + key) || el.getAttribute('data-en');
+
+// Scale labels
+const scaleLabels = {
+  en: ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'],
+  ru: ['Совершенно не согласен(а)', 'Не согласен(а)', 'Нейтрально', 'Согласен(а)', 'Полностью согласен(а)']
+};
+
+// Section dividers (shown before question index)
+const dividers = {
+  10: {
+    en: { title: 'Part 2: Your Partner', body: 'The next 8 questions explore your partner\'s emotional patterns as you experience them in the relationship.' },
+    ru: { title: 'Часть 2: Ваш партнёр', body: 'Следующие 8 вопросов исследуют эмоциональные паттерны вашего партнёра так, как вы их воспринимаете.' }
+  },
+  18: {
+    en: { title: 'Part 3: Your Relationship Stage', body: 'The next 10 questions identify where your relationship is in its natural developmental journey.' },
+    ru: { title: 'Часть 3: Стадия отношений', body: 'Следующие 10 вопросов определяют, на каком этапе естественного развития находятся ваши отношения.' }
+  },
+  28: {
+    en: { title: 'Part 4: Relationship Health', body: 'The final 7 questions assess the overall health and satisfaction in your partnership.' },
+    ru: { title: 'Часть 4: Здоровье отношений', body: 'Последние 7 вопросов оценивают общее здоровье и удовлетворённость в вашем партнёрстве.' }
+  }
+};
+
+// Categories
+const categories = {
+  en: ['Your Attachment Style', 'Your Attachment Style', 'Your Attachment Style', 'Your Attachment Style',
+       'Your Attachment Style', 'Your Attachment Style', 'Your Attachment Style', 'Your Attachment Style',
+       'Your Attachment Style', 'Your Attachment Style',
+       'Your Partner', 'Your Partner', 'Your Partner', 'Your Partner',
+       'Your Partner', 'Your Partner', 'Your Partner', 'Your Partner',
+       'Relationship Stage', 'Relationship Stage', 'Relationship Stage', 'Relationship Stage',
+       'Relationship Stage', 'Relationship Stage', 'Relationship Stage', 'Relationship Stage',
+       'Relationship Stage', 'Relationship Stage',
+       'Relationship Health', 'Relationship Health', 'Relationship Health', 'Relationship Health',
+       'Relationship Health', 'Relationship Health', 'Relationship Health'],
+  ru: ['Ваш стиль привязанности', 'Ваш стиль привязанности', 'Ваш стиль привязанности', 'Ваш стиль привязанности',
+       'Ваш стиль привязанности', 'Ваш стиль привязанности', 'Ваш стиль привязанности', 'Ваш стиль привязанности',
+       'Ваш стиль привязанности', 'Ваш стиль привязанности',
+       'Ваш партнёр', 'Ваш партнёр', 'Ваш партнёр', 'Ваш партнёр',
+       'Ваш партнёр', 'Ваш партнёр', 'Ваш партнёр', 'Ваш партнёр',
+       'Стадия отношений', 'Стадия отношений', 'Стадия отношений', 'Стадия отношений',
+       'Стадия отношений', 'Стадия отношений', 'Стадия отношений', 'Стадия отношений',
+       'Стадия отношений', 'Стадия отношений',
+       'Здоровье отношений', 'Здоровье отношений', 'Здоровье отношений', 'Здоровье отношений',
+       'Здоровье отношений', 'Здоровье отношений', 'Здоровье отношений']
+};
+
+// Questions (35 total)
+const questions = {
+  en: [
+    // 1-10 Self Attachment
+    "When I'm upset, turning to my partner for comfort comes naturally to me.",
+    "I worry that my partner will lose interest in me or leave.",
+    "I prefer to handle my emotions independently rather than relying on my partner.",
+    "I sometimes doubt whether my partner truly loves or values me.",
+    "I feel comfortable letting my partner see all sides of me, including my vulnerabilities.",
+    "When things get too emotionally intense, I tend to pull away or disengage.",
+    "I often analyse my relationship looking for signs that something might be wrong.",
+    "I'm comfortable with my partner having their own space, friends, and interests.",
+    "During arguments, I tend to shut down rather than continue the conversation.",
+    "Deep down, I feel I deserve a loving and secure relationship.",
+    // 11-18 Partner Attachment
+    "My partner shares their feelings with me openly and honestly.",
+    "My partner seems to need a lot of reassurance about our relationship.",
+    "When things get emotionally difficult, my partner withdraws or shuts down.",
+    "My partner's behaviour can feel unpredictable — sometimes very loving, sometimes distant.",
+    "My partner is emotionally available and consistent.",
+    "My partner has difficulty opening up about their deeper feelings.",
+    "When stressed, my partner becomes clingy or more demanding of attention.",
+    "My partner engages constructively during conflicts rather than shutting down or escalating.",
+    // 19-28 Relationship Stage
+    "We feel deeply merged — our lives, interests, and identities feel completely intertwined.",
+    "We've been discovering how different we are, and this creates tension between us.",
+    "I sometimes feel a strong pull toward independence and my own separate world.",
+    "We're learning to accept each other's differences while staying deeply connected.",
+    "We are both fully ourselves AND deeply connected to each other.",
+    "We feel (or once felt) like we complete each other and are perfectly matched.",
+    "We have recurring arguments that feel very difficult to resolve.",
+    "I've been more focused on my own career, hobbies, or friendships lately.",
+    "After going through difficult times, we feel stronger and more solid as a couple.",
+    "We actively support each other's individual dreams and personal growth.",
+    // 29-35 Relationship Health
+    "We communicate openly and honestly, even about difficult or uncomfortable topics.",
+    "Our emotional and/or physical intimacy feels satisfying and fulfilling.",
+    "When we have conflicts, we resolve them without lasting damage to our connection.",
+    "Both of us invest equally in building and maintaining our relationship.",
+    "I feel genuinely respected, seen, and valued by my partner.",
+    "We share compatible values and visions for our future together.",
+    "This relationship brings out the best in both of us."
+  ],
+  ru: [
+    // 1-10 Ваш стиль привязанности
+    "Когда мне плохо, я легко и естественно обращаюсь к партнёру за поддержкой.",
+    "Я беспокоюсь о том, что партнёр может потерять интерес ко мне или уйти.",
+    "Я предпочитаю справляться со своими эмоциями самостоятельно, не опираясь на партнёра.",
+    "Иногда я сомневаюсь, действительно ли партнёр любит и ценит меня.",
+    "Мне комфортно показывать партнёру все свои стороны, включая уязвимость.",
+    "Когда эмоциональное напряжение нарастает, я склонен(на) отстраняться или замыкаться в себе.",
+    "Я часто анализирую отношения в поисках признаков того, что что-то идёт не так.",
+    "Меня устраивает, что у партнёра есть своё личное пространство, друзья и интересы.",
+    "Во время ссор я склонен(на) замолкать и уходить в себя, а не продолжать разговор.",
+    "В глубине души я чувствую, что достоин(на) любящих и безопасных отношений.",
+    // 11-18 Ваш партнёр
+    "Мой партнёр открыто и честно делится со мной своими чувствами.",
+    "Моему партнёру, кажется, нужно много заверений в надёжности наших отношений.",
+    "Когда в отношениях возникают эмоциональные трудности, партнёр уходит в себя или замолкает.",
+    "Поведение партнёра бывает непредсказуемым — иногда очень близким, иногда отстранённым.",
+    "Мой партнёр эмоционально доступен и последователен.",
+    "Партнёру сложно открываться и говорить о глубоких чувствах.",
+    "В стрессовые моменты партнёр становится более цепким или требовательным к вниманию.",
+    "В конфликтах партнёр ведёт себя конструктивно — не уходит в себя и не обостряет ситуацию.",
+    // 19-28 Стадия отношений
+    "Мы чувствуем себя единым целым — наши жизни, интересы и идентичности полностью переплетены.",
+    "Мы всё больше замечаем различия между нами, и это создаёт напряжение в отношениях.",
+    "Я иногда ощущаю сильное желание самостоятельности и своего отдельного пространства.",
+    "Мы учимся принимать различия друг друга, оставаясь при этом глубоко близкими.",
+    "Мы оба полностью остаёмся собой И при этом глубоко связаны друг с другом.",
+    "Мы чувствуем (или когда-то чувствовали), что дополняем друг друга и идеально подходим.",
+    "У нас есть повторяющиеся ссоры, которые очень трудно разрешить.",
+    "В последнее время я больше сосредоточен(а) на своей карьере, увлечениях или дружбе.",
+    "Пройдя через трудные времена, мы чувствуем себя более крепкой и устойчивой парой.",
+    "Мы активно поддерживаем личные мечты и рост друг друга.",
+    // 29-35 Здоровье отношений
+    "Мы общаемся открыто и честно, даже на сложные и неудобные темы.",
+    "Наша эмоциональная и/или физическая близость приносит удовлетворение и ощущение полноты.",
+    "Когда возникают конфликты, мы решаем их без долгосрочного ущерба для нашей связи.",
+    "Мы оба вкладываем равные усилия в построение и поддержание отношений.",
+    "Я чувствую, что партнёр по-настоящему уважает, видит и ценит меня.",
+    "У нас схожие ценности и видение общего будущего.",
+    "Эти отношения помогают нам обоим проявлять лучшее в себе."
+  ]
+};
+
+// ── Result Labels & Descriptions ──
+const attachmentInfo = {
+  secure: {
+    label: { en: 'Secure', ru: 'Надёжный' },
+    cssClass: 'secure',
+    desc: {
+      en: 'You feel comfortable with closeness and are generally confident in your value as a partner. You can ask for support and offer it freely, and you tend to handle relationship challenges without excessive anxiety or withdrawal.',
+      ru: 'Вам комфортна близость, и вы, как правило, уверены в своей ценности как партнёра. Вы умеете просить о поддержке и предлагать её, и справляетесь с трудностями без чрезмерной тревоги или отстранения.'
+    }
+  },
+  anxious: {
+    label: { en: 'Anxious', ru: 'Тревожный' },
+    cssClass: 'anxious',
+    desc: {
+      en: 'You deeply value closeness but worry that it won\'t last. You may frequently seek reassurance, feel hypervigilant to signs of rejection, and find it hard to fully relax in a relationship. Your sensitivity is a gift — it also calls for inner security work.',
+      ru: 'Вы высоко цените близость, но беспокоитесь, что она не продлится. Вы можете часто искать заверений, быть гиперчувствительным к признакам отвержения. Ваша чуткость — дар, и она же призывает к работе над внутренней безопасностью.'
+    }
+  },
+  avoidant: {
+    label: { en: 'Avoidant', ru: 'Избегающий' },
+    cssClass: 'avoidant',
+    desc: {
+      en: 'You prize independence and may feel uncomfortable with too much emotional closeness. In stressful moments, your instinct is self-sufficiency rather than reaching out. This often comes from learning early that self-reliance was safer than depending on others.',
+      ru: 'Вы цените независимость и можете чувствовать дискомфорт при слишком тесной эмоциональной близости. В стрессовые моменты ваш инстинкт — опираться на себя. Часто это связано с убеждением, что самодостаточность надёжнее, чем зависимость от других.'
+    }
+  },
+  fearful: {
+    label: { en: 'Fearful-Avoidant', ru: 'Тревожно-избегающий' },
+    cssClass: 'fearful',
+    desc: {
+      en: 'You long for deep connection but simultaneously fear getting hurt. This push-pull dynamic can create confusion for both you and your partner. Understanding your attachment history is often the key to breaking this cycle.',
+      ru: 'Вы стремитесь к глубокой связи, но одновременно боитесь быть ранены. Эта динамика притяжения-отталкивания может создавать замешательство для вас обоих. Понимание истории вашей привязанности — ключ к выходу из этого цикла.'
+    }
+  }
+};
+
+const partnerAttachmentInfo = {
+  secure:   { label: { en: 'Secure', ru: 'Надёжный' }, cssClass: 'secure' },
+  anxious:  { label: { en: 'Anxious', ru: 'Тревожный' }, cssClass: 'anxious' },
+  avoidant: { label: { en: 'Avoidant', ru: 'Избегающий' }, cssClass: 'avoidant' },
+  fearful:  { label: { en: 'Fearful-Avoidant', ru: 'Тревожно-избегающий' }, cssClass: 'fearful' }
+};
+
+const stageInfo = {
+  symbiosis: {
+    label: { en: 'Symbiosis', ru: 'Симбиоз' },
+    sublabel: { en: 'The Merging Stage', ru: 'Стадия слияния' },
+    cssClass: 'stage-0',
+    desc: {
+      en: 'You and your partner are closely fused — sharing everything and feeling like "two halves of a whole." This beautiful intimacy is the foundation of bonding, and it also carries a developmental invitation: to find yourselves as individuals while staying deeply connected.',
+      ru: 'Вы с партнёром тесно слиты — делитесь всем и чувствуете себя «двумя половинами целого». Эта прекрасная близость — основа связи, и она несёт приглашение: найти себя как личность, оставаясь при этом в глубоком контакте.'
+    }
+  },
+  differentiation: {
+    label: { en: 'Differentiation', ru: 'Дифференциация' },
+    sublabel: { en: 'The Awakening Stage', ru: 'Стадия пробуждения' },
+    cssClass: 'stage-1',
+    desc: {
+      en: 'You\'re discovering that you are two distinct people, not always perfectly aligned. Conflicts about your differences have increased. This is not a sign that something is wrong — it\'s the necessary tension of growth. How you navigate differences now will shape your relationship\'s future.',
+      ru: 'Вы открываете, что являетесь двумя разными людьми, не всегда совпадающими. Конфликты вокруг ваших различий участились. Это не признак того, что что-то не так — это необходимое напряжение роста. То, как вы справляетесь с различиями сейчас, определит будущее ваших отношений.'
+    }
+  },
+  practice: {
+    label: { en: 'Practice', ru: 'Практика' },
+    sublabel: { en: 'The Independence Stage', ru: 'Стадия автономии' },
+    cssClass: 'stage-2',
+    desc: {
+      en: 'One or both partners are feeling the pull toward autonomy and a separate sense of self. This can feel threatening to the relationship but is actually a healthy developmental need. Navigating this stage well — without losing each other — builds lasting maturity.',
+      ru: 'Один или оба партнёра чувствуют тягу к самостоятельности и отдельному «я». Это может казаться угрожающим для отношений, но является здоровой потребностью развития. Умение пройти эту стадию, не теряя друг друга, строит прочную зрелость.'
+    }
+  },
+  rapprochement: {
+    label: { en: 'Rapprochement', ru: 'Воссоединение' },
+    sublabel: { en: 'The Reconnection Stage', ru: 'Стадия воссоединения' },
+    cssClass: 'stage-3',
+    desc: {
+      en: 'After the tensions of differentiation, you\'re finding ways to come back together — accepting differences and rebuilding closeness on more honest terms. This is a period of deepening maturity, real understanding, and a more conscious kind of love.',
+      ru: 'После напряжения дифференциации вы находите пути сближения — принимаете различия и восстанавливаете близость на более честных условиях. Это период углубляющейся зрелости, подлинного понимания и более осознанной любви.'
+    }
+  },
+  interdependence: {
+    label: { en: 'Interdependence', ru: 'Взаимозависимость' },
+    sublabel: { en: 'The Mature Love Stage', ru: 'Стадия зрелой любви' },
+    cssClass: 'stage-4',
+    desc: {
+      en: 'You\'ve developed the capacity to be fully yourselves AND fully connected — a hallmark of a genuinely thriving partnership. You support each other\'s individuality while maintaining deep intimacy. This is the destination many couples work toward.',
+      ru: 'Вы научились быть полностью собой И при этом глубоко связанными — признак по-настоящему процветающего партнёрства. Вы поддерживаете индивидуальность друг друга, сохраняя глубокую близость. Это цель, к которой многие пары стремятся.'
+    }
+  }
+};
+
+const healthLabels = {
+  en: [
+    'Significant Challenges',
+    'Room for Growth',
+    'Developing Strength',
+    'Solid Connection',
+    'Thriving Partnership'
+  ],
+  ru: [
+    'Значительные трудности',
+    'Пространство для роста',
+    'Формирующаяся сила',
+    'Прочная связь',
+    'Процветающее партнёрство'
+  ]
+};
+
+// ═══════════════════════════════════════════════════
+//  LANGUAGE
+// ═══════════════════════════════════════════════════
+function toggleLang() {
+  lang = lang === 'en' ? 'ru' : 'en';
+  document.getElementById('langToggle').textContent = lang === 'en' ? 'Русский' : 'English';
+  applyLang();
+  // Re-render whichever dynamic screen is currently active
+  if (document.getElementById('screen-quiz').classList.contains('active')) renderQuestion();
+  if (document.getElementById('screen-results').classList.contains('active')) renderResults();
+}
+
+function applyLang() {
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const key = 'data-' + lang;
+    const val = el.getAttribute(key) || el.getAttribute('data-en');
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      el.placeholder = val;
+    } else {
+      el.innerHTML = val;
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none'; // force-hide so inline styles can't keep old screens visible
+  });
+  const target = document.getElementById('screen-' + screenId);
+  target.style.display = ''; // clear inline override — let the CSS class handle display type
+  target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ═══════════════════════════════════════════════════
+//  INFO SCREEN
+// ═══════════════════════════════════════════════════
+function startQuiz() {
+  const nameEl = document.getElementById('inp-name');
+  const emailEl = document.getElementById('inp-email');
+  const errName = document.getElementById('err-name');
+  const errEmail = document.getElementById('err-email');
+  let valid = true;
+
+  errName.classList.remove('show'); nameEl.classList.remove('error');
+  errEmail.classList.remove('show'); emailEl.classList.remove('error');
+
+  if (!nameEl.value.trim()) {
+    errName.textContent = lang === 'en' ? 'Please enter your name.' : 'Пожалуйста, введите ваше имя.';
+    errName.classList.add('show'); nameEl.classList.add('error'); valid = false;
+  }
+  const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRx.test(emailEl.value.trim())) {
+    errEmail.textContent = lang === 'en' ? 'Please enter a valid email.' : 'Пожалуйста, введите корректный email.';
+    errEmail.classList.add('show'); emailEl.classList.add('error'); valid = false;
+  }
+  if (!valid) return;
+
+  userName = nameEl.value.trim();
+  userEmail = emailEl.value.trim();
+  currentQ = 0;
+  answers = new Array(35).fill(null);
+  shownDividers = new Set();
+  goTo('quiz');
+  renderQuestion();
+}
+
+// ═══════════════════════════════════════════════════
+//  QUIZ ENGINE
+// ═══════════════════════════════════════════════════
+function renderQuestion() {
+  updateProgress();
+
+  // Show a section divider the first time we reach a boundary question index
+  if (dividers[currentQ] && !shownDividers.has(currentQ)) {
+    shownDividers.add(currentQ);   // mark as shown so we never repeat it
+    renderDivider(dividers[currentQ]);
+    return;
+  }
+
+  const container = document.getElementById('quizContent');
+  const qIndex = currentQ;
+  const qText = questions[lang][qIndex];
+  const category = categories[lang][qIndex];
+  const scale = scaleLabels[lang];
+  const selectedVal = answers[qIndex];
+
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="q-category">${category} <span class="q-counter">${qIndex + 1} / 35</span></div>
+      <div class="q-text">${qText}</div>
+      <div class="options" id="optionsWrap">
+        ${scale.map((label, i) => `
+          <button class="option-btn${selectedVal === i+1 ? ' selected' : ''}"
+                  onclick="selectOption(${i+1})" data-val="${i+1}">
+            <span class="option-dot"></span>
+            <span>${label}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="q-nav">
+        <button class="btn-back" onclick="goBack()"
+          ${lang === 'en' ? 'Back' : 'Назад'}
+        >${lang === 'en' ? '← Back' : '← Назад'}</button>
+        <button class="btn-next ${selectedVal ? 'enabled' : ''}" id="btnNext" onclick="nextQuestion()">
+          ${qIndex < 34 ? (lang === 'en' ? 'Next →' : 'Далее →') : (lang === 'en' ? 'See My Results →' : 'Посмотреть результаты →')}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderDivider(d) {
+  const data = d[lang] || d['en'];
+  const container = document.getElementById('quizContent');
+  container.innerHTML = `
+    <div class="section-divider">
+      <h3>${data.title}</h3>
+      <p>${data.body}</p>
+      <button class="btn-next enabled" onclick="continueDivider()">
+        ${lang === 'en' ? 'Continue →' : 'Продолжить →'}
+      </button>
+    </div>
+  `;
+}
+
+function continueDivider() {
+  renderQuestion(); // divider is already in shownDividers, so renders the real question
+}
+
+function selectOption(val) {
+  answers[currentQ] = val;
+  document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.classList.toggle('selected', parseInt(btn.getAttribute('data-val')) === val);
+  });
+  const nextBtn = document.getElementById('btnNext');
+  if (nextBtn) nextBtn.classList.add('enabled');
+}
+
+function nextQuestion() {
+  if (answers[currentQ] === null) return;
+  if (currentQ < 34) {
+    currentQ++;
+    renderQuestion();
+    scrollToCard();
+  } else {
+    showResults();
+  }
+}
+
+function goBack() {
+  if (currentQ === 0) { goTo('info'); return; }
+  currentQ--;
+  renderQuestion();
+  scrollToCard();
+}
+
+function scrollToCard() {
+  const card = document.querySelector('#quizContent > *');
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function updateProgress() {
+  const pct = (currentQ / 35) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ═══════════════════════════════════════════════════
+//  SCORING
+// ═══════════════════════════════════════════════════
+function calculateResults() {
+  const a = answers; // 0-indexed, values 1-5
+
+  // ── SELF ATTACHMENT ──
+  // Anxiety: high on Q2(i1), Q4(i3), Q7(i6); low on Q8(i7), Q10(i9)
+  const selfAnxiety = (a[1] + a[3] + a[6] + (6 - a[7]) + (6 - a[9])) / 5;
+  // Avoidance: high on Q3(i2), Q6(i5), Q9(i8); low on Q1(i0), Q5(i4)
+  const selfAvoidance = (a[2] + a[5] + a[8] + (6 - a[0]) + (6 - a[4])) / 5;
+
+  let attachment_style;
+  if (selfAnxiety > 3 && selfAvoidance > 3) attachment_style = 'fearful';
+  else if (selfAnxiety > 3) attachment_style = 'anxious';
+  else if (selfAvoidance > 3) attachment_style = 'avoidant';
+  else attachment_style = 'secure';
+
+  // ── PARTNER ATTACHMENT ──
+  // Q11(i10) partner shares openly → low partner avoidance
+  // Q12(i11) needs reassurance → partner anxiety
+  // Q13(i12) withdraws → partner avoidance
+  // Q14(i13) unpredictable → partner anxiety
+  // Q15(i14) emotionally available → low anxiety+avoidance
+  // Q16(i15) difficulty opening up → partner avoidance
+  // Q17(i16) clingy when stressed → partner anxiety
+  // Q18(i17) constructive in conflict → low avoidance
+  const partnerAnxiety  = (a[11] + a[13] + a[16] + (6 - a[14])) / 4;
+  const partnerAvoidance = (a[12] + a[15] + (6 - a[10]) + (6 - a[17])) / 4;
+
+  let partner_attachment;
+  if (partnerAnxiety > 3 && partnerAvoidance > 3) partner_attachment = 'fearful';
+  else if (partnerAnxiety > 3) partner_attachment = 'anxious';
+  else if (partnerAvoidance > 3) partner_attachment = 'avoidant';
+  else partner_attachment = 'secure';
+
+  // ── RELATIONSHIP STAGE ──
+  // Q19(i18) & Q24(i23) → Symbiosis
+  // Q20(i19) & Q25(i24) → Differentiation
+  // Q21(i20) & Q26(i25) → Practice
+  // Q22(i21) & Q27(i26) → Rapprochement
+  // Q23(i22) & Q28(i27) → Interdependence
+  const stageScores = {
+    symbiosis:       (a[18] + a[23]) / 2,
+    differentiation: (a[19] + a[24]) / 2,
+    practice:        (a[20] + a[25]) / 2,
+    rapprochement:   (a[21] + a[26]) / 2,
+    interdependence: (a[22] + a[27]) / 2
+  };
+  // In case of tie, prefer more advanced stage
+  const stageOrder = ['interdependence','rapprochement','practice','differentiation','symbiosis'];
+  let bestStage = 'symbiosis', bestScore = 0;
+  stageOrder.forEach(s => {
+    if (stageScores[s] >= bestScore) { bestScore = stageScores[s]; bestStage = s; }
+  });
+  const relationship_stage = bestStage;
+
+  // ── RELATIONSHIP HEALTH SCORE ──
+  // Q29-Q35 = i28-i34
+  const healthAvg = (a[28] + a[29] + a[30] + a[31] + a[32] + a[33] + a[34]) / 7;
+  let relationship_score = Math.round(((healthAvg - 1) / 4) * 100);
+
+  // Modest adjustments
+  if (attachment_style === 'secure') relationship_score = Math.min(100, relationship_score + 4);
+  if (attachment_style === 'fearful') relationship_score = Math.max(0, relationship_score - 4);
+  if (relationship_stage === 'interdependence') relationship_score = Math.min(100, relationship_score + 4);
+  if (relationship_stage === 'symbiosis') relationship_score = Math.max(0, relationship_score - 3);
+
+  return { attachment_style, partner_attachment, relationship_stage, relationship_score };
+}
+
+function getHealthLabel(score) {
+  const idx = score < 30 ? 0 : score < 50 ? 1 : score < 70 ? 2 : score < 87 ? 3 : 4;
+  return healthLabels[lang][idx];
+}
+
+function getInsightText(results) {
+  const { attachment_style, partner_attachment, relationship_stage, relationship_score } = results;
+  const aLabel = attachmentInfo[attachment_style].label[lang];
+  const paLabel = partnerAttachmentInfo[partner_attachment].label[lang];
+  const sLabel = stageInfo[relationship_stage].label[lang];
+  const sSublabel = stageInfo[relationship_stage].sublabel[lang];
+
+  if (lang === 'en') {
+    let p1 = `Your assessment reveals a <strong>${aLabel}</strong> attachment style paired with a partner who shows <strong>${paLabel}</strong> tendencies. `;
+    if (attachment_style === 'secure' && partner_attachment === 'secure') {
+      p1 += 'This is a powerful foundation — two secure partners can weather storms with remarkable resilience.';
+    } else if ((attachment_style === 'anxious' && partner_attachment === 'avoidant') ||
+               (attachment_style === 'avoidant' && partner_attachment === 'anxious')) {
+      p1 += 'This is one of the most common and challenging pairings — the anxious-avoidant dance. Understanding this dynamic is the first step to transforming it.';
+    } else if (attachment_style === 'fearful' || partner_attachment === 'fearful') {
+      p1 += 'Fearful attachment often emerges from early experiences of inconsistency or loss. Healing is absolutely possible — it typically requires a safe relational container and skilled support.';
+    } else {
+      p1 += 'Understanding how your attachment styles interact opens the door to more conscious and compassionate relating.';
+    }
+
+    let p2 = `Your relationship is currently in the <strong>${sLabel}</strong> stage — ${sSublabel.toLowerCase()}. `;
+    if (relationship_stage === 'differentiation') {
+      p2 += 'Many couples mistake this normal developmental stage for a sign they are incompatible. In reality, navigating differences with curiosity and skill is what creates lasting love.';
+    } else if (relationship_stage === 'interdependence') {
+      p2 += 'This is a wonderful achievement. Your task now is to keep growing and deepening — and to support each other\'s continuing individual development.';
+    } else if (relationship_stage === 'symbiosis') {
+      p2 += 'Enjoy this closeness — and gently begin to explore your individuality within the relationship.';
+    } else if (relationship_stage === 'practice') {
+      p2 += 'The key is to pursue your autonomy without abandoning the relationship. Negotiating independence and togetherness is a skill that pays lifelong dividends.';
+    } else {
+      p2 += 'You\'re building something real and lasting. The work you\'re doing to reconnect will create a richer, more conscious partnership.';
+    }
+
+    return `<p>${p1}</p><p style="margin-top:12px">${p2}</p>`;
+  } else {
+    let p1 = `Ваша диагностика выявила <strong>${aLabel}</strong> стиль привязанности в сочетании с партнёром, который проявляет <strong>${paLabel}</strong> тенденции. `;
+    if (attachment_style === 'secure' && partner_attachment === 'secure') {
+      p1 += 'Это мощная основа — два надёжных партнёра способны преодолевать трудности с замечательной устойчивостью.';
+    } else if ((attachment_style === 'anxious' && partner_attachment === 'avoidant') ||
+               (attachment_style === 'avoidant' && partner_attachment === 'anxious')) {
+      p1 += 'Это одно из самых распространённых и непростых сочетаний — танец тревожного и избегающего. Понимание этой динамики — первый шаг к её трансформации.';
+    } else if (attachment_style === 'fearful' || partner_attachment === 'fearful') {
+      p1 += 'Тревожно-избегающий стиль часто формируется из ранних переживаний непоследовательности или потери. Исцеление абсолютно возможно — оно, как правило, требует безопасного контейнера в отношениях и квалифицированной поддержки.';
+    } else {
+      p1 += 'Понимание того, как взаимодействуют ваши стили привязанности, открывает дверь к более осознанному и сострадательному общению.';
+    }
+
+    let p2 = `Ваши отношения в данный момент находятся на стадии <strong>${sLabel}</strong> — ${sSublabel.toLowerCase()}. `;
+    if (relationship_stage === 'differentiation') {
+      p2 += 'Многие пары ошибочно принимают эту нормальную стадию развития за признак несовместимости. На самом деле умение справляться с различиями с любопытством и навыками — это то, что создаёт долговечную любовь.';
+    } else if (relationship_stage === 'interdependence') {
+      p2 += 'Это замечательное достижение. Ваша задача сейчас — продолжать расти и углублять связь, поддерживая индивидуальное развитие друг друга.';
+    } else if (relationship_stage === 'symbiosis') {
+      p2 += 'Наслаждайтесь этой близостью — и мягко начинайте исследовать свою индивидуальность внутри отношений.';
+    } else if (relationship_stage === 'practice') {
+      p2 += 'Ключ — стремиться к автономии, не оставляя при этом отношения. Умение согласовывать независимость и близость окупается на протяжении всей жизни.';
+    } else {
+      p2 += 'Вы строите что-то настоящее и долговечное. Работа по воссоединению создаст более богатое и осознанное партнёрство.';
+    }
+
+    return `<p>${p1}</p><p style="margin-top:12px">${p2}</p>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  RESULTS SCREEN
+// ═══════════════════════════════════════════════════
+
+// Called once when quiz finishes — navigates then renders
+function showResults() {
+  goTo('results');
+  renderResults();
+}
+
+// Called on every render or language switch — no navigation
+function renderResults() {
+  const results = calculateResults();
+  const { attachment_style, partner_attachment, relationship_stage, relationship_score } = results;
+
+  // Name
+  document.getElementById('resultName').textContent = userName;
+
+  // Grid
+  const grid = document.getElementById('resultsGrid');
+  const ai = attachmentInfo[attachment_style];
+  const pai = partnerAttachmentInfo[partner_attachment];
+  const si = stageInfo[relationship_stage];
+  const healthLabel = getHealthLabel(relationship_score);
+
+  const selfLabel = lang === 'en' ? 'Your Attachment Style' : 'Ваш стиль привязанности';
+  const partnerLabel = lang === 'en' ? "Partner's Attachment Style" : 'Стиль привязанности партнёра';
+  const stageLabel = lang === 'en' ? 'Relationship Stage' : 'Стадия отношений';
+  const healthCardLabel = lang === 'en' ? 'Relationship Health Score' : 'Здоровье отношений';
+  const outOf = lang === 'en' ? 'out of 100' : 'из 100';
+
+  grid.innerHTML = `
+    <div class="result-card ${ai.cssClass}">
+      <div class="result-card-label">${selfLabel}</div>
+      <div class="result-card-value">${ai.label[lang]}</div>
+      <div class="result-card-desc">${ai.desc[lang]}</div>
+    </div>
+    <div class="result-card ${pai.cssClass}">
+      <div class="result-card-label">${partnerLabel}</div>
+      <div class="result-card-value">${pai.label[lang]}</div>
+      <div class="result-card-desc">${lang === 'en'
+        ? 'Based on your responses, your partner appears to show ' + pai.label.en.toLowerCase() + ' attachment tendencies. This shapes how they respond to closeness, conflict, and emotional demands.'
+        : 'На основе ваших ответов партнёр проявляет ' + pai.label.ru.toLowerCase() + ' тенденции привязанности. Это определяет, как они реагируют на близость, конфликты и эмоциональные запросы.'
+      }</div>
+    </div>
+    <div class="result-card ${si.cssClass}">
+      <div class="result-card-label">${stageLabel}</div>
+      <div class="result-card-value">${si.label[lang]}</div>
+      <div class="result-card-desc">${si.sublabel[lang]}<br><br>${si.desc[lang]}</div>
+    </div>
+    <div class="result-card health">
+      <div class="result-card-label">${healthCardLabel}</div>
+      <div class="health-score-num">${relationship_score}</div>
+      <div class="health-score-sub">${outOf}</div>
+      <div class="health-bar-wrap">
+        <div class="health-bar-fill" id="healthBar" style="width:0%"></div>
+      </div>
+      <div class="result-card-value" style="font-size:1rem;margin-top:8px">${healthLabel}</div>
+    </div>
+  `;
+
+  // Animate health bar
+  setTimeout(() => {
+    document.getElementById('healthBar').style.width = relationship_score + '%';
+  }, 300);
+
+  // Insight
+  const insight = document.getElementById('insightCard');
+  const insightTitle = lang === 'en' ? 'What This Means for You' : 'Что это значит для вас';
+  insight.innerHTML = `<h3>${insightTitle}</h3>${getInsightText(results)}`;
+
+  // CTA
+  const ctaEl = document.getElementById('ctaCard');
+  const mailBody = lang === 'en'
+    ? `Hi Mila,\n\nI just completed your Relationship Assessment and would love to book a free diagnostic session.\n\nHere are my results:\n• My Attachment Style: ${ai.label.en}\n• Partner's Attachment Style: ${pai.label.en}\n• Relationship Stage: ${si.label.en}\n• Relationship Health Score: ${relationship_score}/100\n\nMy name: ${userName}\nMy email: ${userEmail}\n\nLooking forward to hearing from you!\n\n${userName}`
+    : `Здравствуйте, Мила!\n\nЯ только что прошёл(а) вашу диагностику отношений и хотел(а) бы записаться на бесплатную диагностическую сессию.\n\nМои результаты:\n• Мой стиль привязанности: ${ai.label.ru}\n• Стиль привязанности партнёра: ${pai.label.ru}\n• Стадия отношений: ${si.label.ru}\n• Здоровье отношений: ${relationship_score}/100\n\nМоё имя: ${userName}\nМой email: ${userEmail}\n\nС нетерпением жду ответа!\n\n${userName}`;
+
+  const mailtoLink = `mailto:lioudmila.skalkina@gmail.com?subject=Free diagnostic&body=${encodeURIComponent(mailBody)}`;
+
+  if (lang === 'en') {
+    ctaEl.innerHTML = `
+      <h3>Ready to go deeper?</h3>
+      <p>Book a complimentary 60-minute diagnostic session with Mila. Click below to send an email — she'll reply personally to schedule your session.</p>
+      <a class="btn-cta" href="${mailtoLink}">Book My Free Diagnostic Session →</a>
+      <div class="cta-note">Opens your email client · Subject pre-filled · Reply to lioudmila.skalkina@gmail.com</div>
+    `;
+  } else {
+    ctaEl.innerHTML = `
+      <h3>Готовы к более глубокому погружению?</h3>
+      <p>Запишитесь на бесплатную 60-минутную диагностическую сессию с Милой. Нажмите кнопку ниже, чтобы отправить письмо — Мила ответит лично для согласования времени.</p>
+      <a class="btn-cta" href="${mailtoLink}">Записаться на бесплатную диагностику →</a>
+      <div class="cta-note">Откроет ваш почтовый клиент · Тема уже заполнена · Ответ на lioudmila.skalkina@gmail.com</div>
+    `;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  applyLang();
+  // Landing screen is already .screen.active in HTML — CSS handles display and opacity.
+  // Do NOT set inline styles here; they would persist after goTo() and block navigation.
+});
+</script>
+</body>
+</html>
